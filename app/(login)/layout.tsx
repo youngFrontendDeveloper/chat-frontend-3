@@ -1,3 +1,5 @@
+import '@/app/styles/index.scss';
+
 interface IChildren {
 	children: React.ReactNode;
 }

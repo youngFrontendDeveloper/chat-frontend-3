@@ -38,7 +38,8 @@ const eslintConfig = defineConfig([
 					varsIgnorePattern: '^_',
 					caughtErrorsIgnorePattern: '^_'
 				}
-			]
+			],
+			'react/jsx-props-no-spreading': 'warn'
 		}
 	}
 ]);
