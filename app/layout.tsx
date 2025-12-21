@@ -21,7 +21,9 @@ export default function RootLayout({ children }: IChildren) {
 			<head></head>
 			<body>
 				<StoreProvider>
-					<OnlineChecker>{children}</OnlineChecker>
+					<OnlineChecker>
+						<main>{children}</main>
+					</OnlineChecker>
 				</StoreProvider>
 			</body>
 		</html>
