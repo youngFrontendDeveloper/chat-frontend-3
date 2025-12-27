@@ -1,0 +1,1 @@
+export { UniversalSearch } from './UniversalSearch';
