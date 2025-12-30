@@ -1,70 +1,55 @@
-import { RootState } from '@/app/providers/StoreProvider';
-import { authActions } from '@/features/auth';
 import {
-	BaseQueryFn,
-	FetchArgs,
 	fetchBaseQuery,
-	FetchBaseQueryError
+	type BaseQueryFn,
+	type FetchArgs,
+	type FetchBaseQueryError
 } from '@reduxjs/toolkit/query/react';
-import { logoutFromInterceptor } from './services/logoutForInterceptor/logoutForInterceptor';
 
-// Интерсептор 1: добавление accessToken в заголовок
-const baseQuery = fetchBaseQuery({
-	baseUrl: process.env.NEXT_PUBLIC_BASE_API as string
+const BASE_API = process.env.NEXT_PUBLIC_BASE_API ?? 'http://localhost:8000';
+const REFRESH_PATH =
+	process.env.NEXT_PUBLIC_AUTH_REFRESH_PATH ?? '/api/v1/auth/refresh/';
+const ACCESS_TOKEN_KEY =
+	process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY ?? 'access_token';
+
+const rawBaseQuery = fetchBaseQuery({
+	baseUrl: BASE_API,
+	credentials: 'include',
+	prepareHeaders: headers => {
+		headers.set('accept', 'application/json');
+
+		if (typeof window !== 'undefined') {
+			const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+			if (token) {
+				headers.set('authorization', `Bearer ${token}`);
+			}
+		}
+
+		return headers;
+	}
 });
 
-// Интерсептор 2: refresh при 401
 const baseQueryWithReauth: BaseQueryFn<
 	string | FetchArgs,
 	unknown,
 	FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-	const result = await baseQuery(args, api, extraOptions);
+	let result = await rawBaseQuery(args, api, extraOptions);
 
-	if (result.error && result.error.status === 401) {
-		const state = api.getState() as RootState;
+	if (result.error?.status === 401) {
+		const refreshResult = await rawBaseQuery(
+			{ url: REFRESH_PATH, method: 'POST' },
+			api,
+			extraOptions
+		);
 
-		// Ждем завершения текущего refresh, чтобы избежать состояния гонки
-		if (state.auth?.isRefreshing) {
-			await new Promise(resolve => {
-				const check = () => {
-					if (!state.auth?.isRefreshing) {
-						resolve(true);
-					} else {
-						setTimeout(check, 50);
-					}
-				};
-				check();
-			});
-			return baseQuery(args, api, extraOptions);
-		}
+		if (refreshResult.data) {
+			const data = refreshResult.data as { access_token?: string };
 
-		api.dispatch(authActions.setRefreshing(true));
-
-		try {
-			const refreshResult = await baseQuery(
-				{
-					url: '/api/auth/refresh',
-					method: 'POST'
-				},
-				api,
-				extraOptions
-			);
-
-			if (refreshResult.error) {
-				api.dispatch(authActions.logout());
-				await logoutFromInterceptor();
-				return result;
+			if (data.access_token && typeof window !== 'undefined') {
+				localStorage.setItem(ACCESS_TOKEN_KEY, data.access_token);
 			}
 
-			// Повторяем с новым токеном (prepareHeaders подхватит автоматически)
-			return baseQuery(args, api, extraOptions);
-		} catch (_) {
-			api.dispatch(authActions.logout());
-			await logoutFromInterceptor();
-			return result;
-		} finally {
-			api.dispatch(authActions.setRefreshing(false));
+			result = await rawBaseQuery(args, api, extraOptions);
 		}
 	}
 

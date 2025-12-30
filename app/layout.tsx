@@ -1,43 +1,21 @@
-import { OnlineChecker } from '@/app/providers/OnlineChecker';
-import { StoreProvider } from '@/app/providers/StoreProvider';
-import '@/app/styles/index.scss';
-
-interface IChildren {
-	children: React.ReactNode;
-}
+import type { ReactNode } from 'react';
+import { StoreProvider } from '@/app/providers/StoreProvider/ui/StoreProvider';
 
 import { Sidebar } from '@/widgets/Sidebar';
-import { ChatList } from '@/widgets/ChatList';
+import { ChatList, ChatListSearch } from '@/features/ChatList/ui';
 
-export default function RootLayout({
-	children
-}: {
-	children: React.ReactNode;
-}) {
+import '@/app/styles/index.scss';
+
+export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang='ru'>
 			<body>
+				{children}
 				<StoreProvider>
-					{/* ГЛАВНЫЙ КОНТЕЙНЕР: на всю высоту экрана, flex-row */}
-					<div
-						style={{
-							display: 'flex',
-							height: '100vh',
-							width: '100vw',
-							overflow: 'hidden'
-						}}
-					>
+					<div className='flex h-screen w-screen overflow-hidden'>
 						<Sidebar />
-
-						{/* 2. Список чатов */}
-						<div
-							style={{
-								width: '350px',
-								borderRight: '1px solid #e0e0e0',
-								display: 'flex',
-								flexDirection: 'column'
-							}}
-						>
+						<div className='w-[350px] border-r border-gray-200 flex flex-col overflow-hidden bg-white'>
+							<ChatListSearch />
 							<ChatList />
 						</div>
 					</div>
