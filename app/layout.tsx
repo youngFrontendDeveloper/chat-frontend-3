@@ -15,7 +15,14 @@ interface IChildren {
 	children: React.ReactNode;
 }
 
-export default function RootLayout({ children }: IChildren) {
+import { Sidebar } from '@/widgets/Sidebar';
+import { ChatList } from '@/widgets/ChatList';
+
+export default function RootLayout({
+	children
+}: {
+	children: React.ReactNode;
+}) {
 	return (
 		<html lang='ru' className={`${roboto.variable} ${sfPro.variable} `}>
 			<head></head>
