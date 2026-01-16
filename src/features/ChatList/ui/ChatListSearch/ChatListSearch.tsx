@@ -1,30 +1,38 @@
 'use client';
 
-import React, { ChangeEvent, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectChatListSearchQuery, setChatListSearchQuery } from '../../model';
+import React from 'react';
 import styles from './ChatListSearch.module.scss';
 
-export const ChatListSearch = () => {
-	const dispatch = useDispatch();
-	const value = useSelector(selectChatListSearchQuery);
+type Props = {
+	value: string;
+	onChange: (value: string) => void;
+	placeholder?: string;
+};
 
-	const onChange = useCallback(
-		(e: ChangeEvent<HTMLInputElement>) => {
-			dispatch(setChatListSearchQuery(e.target.value));
-		},
-		[dispatch]
-	);
-
+export const ChatListSearch = ({
+	value,
+	onChange,
+	placeholder = 'Поиск'
+}: Props) => {
 	return (
-		<div className={styles.searchContainer}>
-			<input
-				type='text'
-				value={value}
-				onChange={onChange}
-				placeholder='Поиск контактов'
-				className={styles.searchInput}
-			/>
+		<div className={styles.root}>
+			<div className={styles.field}>
+				<img
+					className={styles.icon}
+					src='/images/Search.svg'
+					alt='search'
+					width={16}
+					height={16}
+					draggable={false}
+				/>
+				<input
+					className={styles.input}
+					value={value}
+					onChange={e => onChange(e.target.value)}
+					placeholder={placeholder}
+					type='text'
+				/>
+			</div>
 		</div>
 	);
 };

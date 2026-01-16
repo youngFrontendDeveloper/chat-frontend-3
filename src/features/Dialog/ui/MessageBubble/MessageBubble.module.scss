@@ -1,0 +1,43 @@
+.messageRow {
+	display: flex;
+	margin: 8px 0;
+}
+
+.in {
+	justify-content: flex-start;
+}
+
+.out {
+	justify-content: flex-end;
+}
+
+.bubble {
+	display: inline-flex;
+	align-items: flex-end;
+	gap: 8px;
+	max-width: 560px;
+	padding: 10px 12px;
+	border-radius: 12px;
+	background: #eef0f3;
+}
+
+.out .bubble {
+	background: #cfeeea;
+}
+
+.text {
+	display: block;
+	white-space: pre-wrap;
+	word-break: break-word;
+	min-width: 0;
+	line-height: 20px;
+}
+
+.time {
+	flex: 0 0 auto;
+	font-size: 12px;
+	line-height: 12px;
+	color: #6b7280;
+	margin-bottom: 1px;
+	user-select: none;
+}

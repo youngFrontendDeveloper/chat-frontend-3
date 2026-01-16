@@ -1,3 +1,69 @@
-.mainLayout {
-	opacity: 1; //  // тестовый стиль, потом удалить
+.app {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	background: #fff;
+}
+
+/* единая “карточка” интерфейса */
+.frame {
+	flex: 1;
+	min-height: 0;
+	margin: 0 120px;
+	background: #fff;
+	border-radius: 16px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.header {
+	flex: 0 0 auto;
+	background: #fff;
+	border-bottom: none;
+}
+
+.shell {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	overflow: hidden;
+	gap: 24px;
+}
+
+.sidebar {
+	flex: 0 0 auto;
+}
+
+.left {
+	width: 360px;
+	flex: 0 0 360px;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	background: #f5f6f8;
+	border-right: 1px solid #e5e7eb;
+	border-radius: 8px;
+}
+
+.search {
+	padding: 12px 12px 8px;
+}
+
+.list {
+	flex: 1;
+	min-height: 0;
+	overflow: auto;
+}
+
+.right {
+	flex: 1;
+	min-width: 0;
+	min-height: 0;
+	border-radius: 8px;
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 }

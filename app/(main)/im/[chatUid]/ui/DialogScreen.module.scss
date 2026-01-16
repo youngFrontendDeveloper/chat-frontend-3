@@ -1,0 +1,174 @@
+.dialog {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	background: #fff;
+}
+
+.state {
+	padding: 16px;
+	color: #6b7280;
+}
+
+.stateError {
+	padding: 16px;
+	color: #ef4444;
+}
+
+.notFound {
+	padding: 24px;
+}
+
+.notFoundTitle {
+	font-size: 18px;
+	font-weight: 700;
+	margin-bottom: 8px;
+}
+
+.notFoundSub {
+	font-size: 14px;
+	color: #374151;
+}
+
+.header {
+	height: 64px;
+	padding: 10px 16px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid #e5e7eb;
+	background: #fff;
+}
+
+.headerLeft {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+}
+
+.headerAvatar {
+	width: 40px;
+	height: 40px;
+	flex: 0 0 40px;
+}
+
+.headerAvatarImg {
+	width: 40px;
+	height: 40px;
+	border-radius: 999px;
+	object-fit: cover;
+	display: block;
+}
+
+.headerAvatarFallback {
+	width: 40px;
+	height: 40px;
+	border-radius: 999px;
+	background: #6d5bd0;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+}
+
+.headerInfo {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.headerTitle {
+	font-size: 14px;
+	font-weight: 700;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.headerStatus {
+	font-size: 12px;
+	color: #10b981;
+}
+
+.headerRight {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.iconBtn {
+	width: 34px;
+	height: 34px;
+	border-radius: 10px;
+	border: 1px solid #e5e7eb;
+	background: #fff;
+	cursor: pointer;
+}
+
+.iconBtn:hover {
+	background: #f3f4f6;
+}
+
+.body {
+	flex: 1;
+	min-height: 0;
+	overflow: auto;
+	background: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.empty {
+	text-align: center;
+	color: #6b7280;
+}
+
+.emptyTitle {
+	font-size: 14px;
+	font-weight: 600;
+	margin-bottom: 4px;
+	color: #374151;
+}
+
+.emptySub {
+	font-size: 12px;
+}
+
+.footer {
+	height: 56px;
+	padding: 10px 12px;
+	border-top: 1px solid #e5e7eb;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	background: #fff;
+}
+
+.attachBtn,
+.micBtn {
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	border: 1px solid #e5e7eb;
+	background: #fff;
+	cursor: pointer;
+}
+
+.attachBtn:hover,
+.micBtn:hover {
+	background: #f3f4f6;
+}
+
+.input {
+	flex: 1;
+	height: 36px;
+	padding: 0 12px;
+	border-radius: 10px;
+	border: 1px solid #e5e7eb;
+	outline: none;
+	font-size: 14px;
+}

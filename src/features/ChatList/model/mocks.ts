@@ -23,7 +23,7 @@ export const mockChatListResponse: ChatListResponse = {
 			is_group: false,
 			notification: true,
 			new_message_count: 2,
-			name: 'Олег Ермаков',
+			name: 'Руслан Ермаков',
 			chat_type: 'chat',
 			last_activity_at: now - 10_000,
 			last_seen_message: {
