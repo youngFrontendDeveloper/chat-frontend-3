@@ -1,0 +1,235 @@
+.dialog {
+	height: 100%;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+}
+
+.topBar {
+	height: 60px;
+	flex: 0 0 60px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 16px;
+	background: #f5f6f8;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.root {
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	height: 100%;
+}
+
+.messages {
+	flex: 1;
+	min-height: 0;
+	overflow: auto;
+	padding: 16px;
+	background: #f5f6f8;
+}
+
+.peer {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+}
+
+.peerAvatar {
+	width: 32px;
+	height: 32px;
+	flex: 0 0 32px;
+	border-radius: 999px;
+	overflow: hidden;
+	background: #f3f4f6;
+}
+
+.peerAvatarImg {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.peerAvatarFallback {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #6d5bd0;
+	color: #fff;
+	font-weight: 700;
+	font-size: 14px;
+}
+
+.peerMeta {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.peerName {
+	font-size: 14px;
+	font-weight: 700;
+	color: #111827;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.peerStatus {
+	font-size: 12px;
+	color: #6b7280;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.iconBtn {
+	width: 36px;
+	height: 36px;
+	border: 0;
+	background: transparent;
+	border-radius: 8px;
+	color: #6d5bd0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.iconBtn:hover {
+	background: rgba(109, 91, 208, 10%);
+}
+
+.msgRow {
+	display: flex;
+	margin: 8px 0;
+}
+
+.msgRowIn {
+	justify-content: flex-start;
+}
+
+.msgRowOut {
+	justify-content: flex-end;
+}
+
+/*
+  Время справа от последней строки:
+  - bubble relative
+  - time absolute bottom/right
+  - padding-right/padding-bottom достаточно, чтобы текст не залезал под время
+*/
+.bubble {
+	position: relative;
+	max-width: 70%;
+	border-radius: 12px;
+	padding: 10px 56px 18px 12px; /* справа место под время, снизу место под время */
+	box-shadow: 0 1px 0 rgba(17, 24, 39, 4%);
+}
+
+.bubbleIn {
+	background: #eef0f3;
+	color: #111827;
+}
+
+.bubbleOut {
+	background: #d7f5ef;
+	color: #111827;
+}
+
+.bubbleText {
+	font-size: 14px;
+	line-height: 18px;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.bubbleTime {
+	position: absolute;
+	right: 12px;
+	bottom: 6px;
+	font-size: 12px;
+	line-height: 12px;
+	color: #6b7280;
+}
+
+/* Футер */
+.footer {
+	flex: 0 0 60px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 16px;
+	background: #f5f6f8; /* серый футер как в макете */
+	border-top: 1px solid #e5e7eb;
+}
+
+.footerIconBtn {
+	width: 40px;
+	height: 40px;
+	border: 0;
+	background: transparent;
+	border-radius: 10px;
+	color: #6d5bd0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.footerIconBtn:hover {
+	background: rgba(109, 91, 208, 10%);
+}
+
+.inputWrap {
+	flex: 1;
+	position: relative;
+	height: 40px;
+}
+
+.input {
+	width: 100%;
+	height: 40px;
+	border-radius: 12px;
+	border: 1px solid #e5e7eb;
+	background: #fff; /* белый инпут */
+	padding: 0 44px 0 12px; /* место под смайлик справа */
+	outline: none;
+	font-size: 14px;
+}
+
+.emojiBtn {
+	position: absolute;
+	right: 6px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 32px;
+	height: 32px;
+	border: 0;
+	background: transparent;
+	border-radius: 8px;
+	color: #9ca3af;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.emojiBtn:hover {
+	background: rgba(17, 24, 39, 6%);
+	color: #6b7280;
+}
