@@ -20,6 +20,7 @@ interface ButtonProps {
 	btnType?: ButtonType;
 	children?: ReactNode;
 	onClick?: () => void;
+	ariaLabel?: string;
 }
 
 export const Button = (props: ButtonProps) => {
@@ -33,7 +34,8 @@ export const Button = (props: ButtonProps) => {
 		callBtn = false,
 		btnType = ButtonType.BUTTON,
 		children,
-		onClick
+		onClick,
+		ariaLabel
 	} = props;
 
 	const mods: Mods = {
@@ -51,6 +53,7 @@ export const Button = (props: ButtonProps) => {
 			disabled={disabled}
 			type={btnType}
 			onClick={onClick}
+			aria-label={ariaLabel}
 		>
 			{children}
 		</button>
