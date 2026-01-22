@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { ChatList } from '../ChatList/ChatList';
-import { ChatListSearch } from '../ChatListSearch/ChatListSearch';
+import { ChatListSearch } from '@/features/ChatList/ui';
 
 export function ChatListPanel() {
 	const [searchQuery, setSearchQuery] = useState('');
@@ -19,5 +19,3 @@ export function ChatListPanel() {
 		</>
 	);
 }
-
-export default ChatListPanel;

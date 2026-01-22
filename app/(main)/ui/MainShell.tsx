@@ -1,23 +1,34 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
+import React, { useCallback, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 
 import { Sidebar } from '@/widgets/Sidebar';
 import { ChatList } from '@/features/ChatList/ui';
-import styles from './MainShell.module.scss';
+import { ChatListSearch } from '@/features/ChatList/ui/ChatListSearch/ChatListSearch';
+
+import styles from './mainShell.module.scss';
 
 export default function MainShell({ children }: { children: ReactNode }) {
 	const params = useParams<{ chatUid?: string }>();
+	const router = useRouter();
+
 	const activeChatUid =
 		typeof params?.chatUid === 'string' ? params.chatUid : null;
 
 	const [searchQuery, setSearchQuery] = useState('');
 
-	const onChange = useMemo(() => {
-		return (value: string) => setSearchQuery(value);
+	const handleSearchChange = useCallback((value: string) => {
+		setSearchQuery(value);
 	}, []);
+
+	const handleSelectChat = useCallback(
+		(uid: string) => {
+			router.push(`/im/${uid}`);
+		},
+		[router]
+	);
 
 	return (
 		<div className={styles.shell}>
@@ -25,22 +36,14 @@ export default function MainShell({ children }: { children: ReactNode }) {
 
 			<div className={styles.left}>
 				<div className={styles.search}>
-					<input
-						value={searchQuery}
-						onChange={e => onChange(e.target.value)}
-						className={styles.searchInput}
-						placeholder='Поиск'
-						type='text'
-					/>
+					<ChatListSearch value={searchQuery} onChange={handleSearchChange} />
 				</div>
 
 				<div className={styles.list}>
 					<ChatList
 						searchQuery={searchQuery}
 						activeChatUid={activeChatUid}
-						onSelectChat={function (uid: string): void {
-							throw new Error('Function not implemented.');
-						}}
+						onSelectChat={handleSelectChat}
 					/>
 				</div>
 			</div>

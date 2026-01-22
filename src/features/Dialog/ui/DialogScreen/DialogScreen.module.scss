@@ -107,6 +107,7 @@
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
+	padding: 0;
 }
 
 .iconBtn:hover {
@@ -166,7 +167,6 @@
 	color: #6b7280;
 }
 
-/* Футер */
 .footer {
 	flex: 0 0 60px;
 	height: 60px;
@@ -174,7 +174,7 @@
 	align-items: center;
 	gap: 10px;
 	padding: 10px 16px;
-	background: #f5f6f8; /* серый футер как в макете */
+	background: #f5f6f8;
 	border-top: 1px solid #e5e7eb;
 }
 
