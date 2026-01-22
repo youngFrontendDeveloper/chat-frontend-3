@@ -1,12 +1,19 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import styles from './DialogScreen.module.scss';
 import { MessageBubble } from '@/features/Dialog/ui/MessageBubble/MessageBubble';
 
+import { Button } from '@/shared/ui/Button';
+import {
+	ButtonTheme,
+	ButtonSize,
+	ButtonColor,
+	ButtonType
+} from '@/shared/ui/Button/model/types/type';
+
 type DialogScreenProps = {
 	chatUid: string;
-	// Если позже подтянешь реальный чат-объект — можно прокинуть сюда name/avatar/status
 };
 
 type Message = {
@@ -17,9 +24,7 @@ type Message = {
 };
 
 export const DialogScreen: React.FC<DialogScreenProps> = ({ chatUid }) => {
-	// Временно мок. Потом заменишь на запрос по chatUid.
 	const peer = useMemo(() => {
-		// Мини-табличка для демо: chatUid -> имя
 		const map: Record<
 			string,
 			{ name: string; status: string; avatarUrl?: string | null }
@@ -33,7 +38,7 @@ export const DialogScreen: React.FC<DialogScreenProps> = ({ chatUid }) => {
 		};
 
 		return (
-			map[chatUid] ?? { name: `Диалог`, status: 'соединение…', avatarUrl: null }
+			map[chatUid] ?? { name: 'Диалог', status: 'соединение…', avatarUrl: null }
 		);
 	}, [chatUid]);
 
@@ -57,8 +62,43 @@ export const DialogScreen: React.FC<DialogScreenProps> = ({ chatUid }) => {
 		[]
 	);
 
+	// Заглушки под действия (позже подключишь реальную логику)
+	const handleSearch = useCallback(() => {
+		// поиск по диалогу
+		// eslint-disable-next-line no-console
+		console.log('search in dialog');
+	}, []);
+
+	const handleCall = useCallback(() => {
+		// звонок
+		// eslint-disable-next-line no-console
+		console.log('call');
+	}, []);
+
+	const handleAttach = useCallback(() => {
+		// прикрепить файл
+		// eslint-disable-next-line no-console
+		console.log('attach file');
+	}, []);
+
+	const handleEmoji = useCallback(() => {
+		// открыть панель эмодзи
+		// eslint-disable-next-line no-console
+		console.log('open emoji');
+	}, []);
+
+	const handleVoice = useCallback(() => {
+		// голосовое сообщение
+		// eslint-disable-next-line no-console
+		console.log('voice message');
+	}, []);
+
 	return (
-		<div className={styles.dialog}>
+		<div
+			className={styles.dialog}
+			role='region'
+			aria-label={`Диалог с ${peer.name}`}
+		>
 			<div className={styles.topBar}>
 				<div className={styles.peer}>
 					<div className={styles.peerAvatar}>
@@ -83,12 +123,14 @@ export const DialogScreen: React.FC<DialogScreenProps> = ({ chatUid }) => {
 				</div>
 
 				<div className={styles.actions}>
-					<button
-						type='button'
-						className={styles.iconBtn}
-						aria-label='Поиск в диалоге'
+					<Button
+						theme={ButtonTheme.CIRCLE}
+						size={ButtonSize.S}
+						color={ButtonColor.TRANSPARENT}
+						btnType={ButtonType.BUTTON}
+						ariaLabel='Поиск в диалоге'
+						onClick={handleSearch}
 					>
-						{/* search icon (inline svg чтобы не зависеть от путей) */}
 						<svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
 							<path
 								d='M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z'
@@ -102,14 +144,16 @@ export const DialogScreen: React.FC<DialogScreenProps> = ({ chatUid }) => {
 								strokeLinecap='round'
 							/>
 						</svg>
-					</button>
+					</Button>
 
-					<button
-						type='button'
-						className={styles.iconBtn}
-						aria-label='Позвонить'
+					<Button
+						theme={ButtonTheme.CIRCLE}
+						size={ButtonSize.S}
+						color={ButtonColor.TRANSPARENT}
+						btnType={ButtonType.BUTTON}
+						ariaLabel='Позвонить'
+						onClick={handleCall}
 					>
-						{/* phone icon */}
 						<svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
 							<path
 								d='M7 3h3l2 5-2 1c1 3 3 5 6 6l1-2 5 2v3c0 1-1 2-2 2-9 0-16-7-16-16 0-1 1-2 2-2Z'
@@ -118,7 +162,7 @@ export const DialogScreen: React.FC<DialogScreenProps> = ({ chatUid }) => {
 								strokeLinejoin='round'
 							/>
 						</svg>
-					</button>
+					</Button>
 				</div>
 			</div>
 
@@ -134,12 +178,14 @@ export const DialogScreen: React.FC<DialogScreenProps> = ({ chatUid }) => {
 			</div>
 
 			<div className={styles.footer}>
-				<button
-					type='button'
-					className={styles.footerIconBtn}
-					aria-label='Прикрепить файл'
+				<Button
+					theme={ButtonTheme.CIRCLE}
+					size={ButtonSize.S}
+					color={ButtonColor.TRANSPARENT}
+					btnType={ButtonType.BUTTON}
+					ariaLabel='Прикрепить файл'
+					onClick={handleAttach}
 				>
-					{/* paperclip */}
 					<svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
 						<path
 							d='M21 10.5 12.2 19.3a5 5 0 0 1-7.1-7.1L14.5 2.8a3.5 3.5 0 0 1 5 5l-9.2 9.2a2 2 0 1 1-2.8-2.8l8.5-8.5'
@@ -149,13 +195,25 @@ export const DialogScreen: React.FC<DialogScreenProps> = ({ chatUid }) => {
 							strokeLinejoin='round'
 						/>
 					</svg>
-				</button>
+				</Button>
 
 				<div className={styles.inputWrap}>
-					<input className={styles.input} placeholder='Сообщение' type='text' />
+					<input
+						className={styles.input}
+						placeholder='Сообщение'
+						type='text'
+						autoFocus
+					/>
 
-					<button type='button' className={styles.emojiBtn} aria-label='Эмодзи'>
-						{/* smile */}
+					<Button
+						className={styles.emojiBtn}
+						theme={ButtonTheme.CIRCLE}
+						size={ButtonSize.S}
+						color={ButtonColor.TRANSPARENT}
+						btnType={ButtonType.BUTTON}
+						ariaLabel='Эмодзи'
+						onClick={handleEmoji}
+					>
 						<svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
 							<path
 								d='M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z'
@@ -175,15 +233,17 @@ export const DialogScreen: React.FC<DialogScreenProps> = ({ chatUid }) => {
 								strokeLinecap='round'
 							/>
 						</svg>
-					</button>
+					</Button>
 				</div>
 
-				<button
-					type='button'
-					className={styles.footerIconBtn}
-					aria-label='Голосовое сообщение'
+				<Button
+					theme={ButtonTheme.CIRCLE}
+					size={ButtonSize.S}
+					color={ButtonColor.TRANSPARENT}
+					btnType={ButtonType.BUTTON}
+					ariaLabel='Голосовое сообщение'
+					onClick={handleVoice}
 				>
-					{/* mic */}
 					<svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
 						<path
 							d='M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3Z'
@@ -203,7 +263,7 @@ export const DialogScreen: React.FC<DialogScreenProps> = ({ chatUid }) => {
 							strokeLinecap='round'
 						/>
 					</svg>
-				</button>
+				</Button>
 			</div>
 		</div>
 	);
