@@ -8,18 +8,20 @@ import {
 } from '@reduxjs/toolkit';
 import { StateSchema } from './StateSchema';
 import { authReducer } from '@/features/auth/model/slices/authSlice';
+import { chatListSearchReducer } from '@/features/ChatList';
 
 const rootReducer = combineReducers<ReducersMapObject<StateSchema>>({
 	[localApi.reducerPath]: localApi.reducer,
 	[rtkApi.reducerPath]: rtkApi.reducer,
 	cities: citiesReducer,
-	auth: authReducer
+	auth: authReducer,
+	chatListSearch: chatListSearchReducer
 });
 
-export const makeStore = (initialState?: StateSchema) => {
+export const makeStore = (initialState?: Partial<StateSchema>) => {
 	return configureStore({
 		reducer: rootReducer,
-		preloadedState: initialState,
+		preloadedState: initialState as StateSchema,
 		middleware: getDefaultMiddleware =>
 			getDefaultMiddleware().concat([localApi.middleware, rtkApi.middleware])
 	});

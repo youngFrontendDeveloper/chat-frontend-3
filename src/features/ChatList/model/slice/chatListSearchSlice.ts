@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface ChatListSearchState {
+export interface ChatListSearchSchema {
 	query: string;
 }
 
-const initialState: ChatListSearchState = {
+const initialState: ChatListSearchSchema = {
 	query: ''
 };
 

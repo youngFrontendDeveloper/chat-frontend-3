@@ -22,6 +22,7 @@ interface ButtonProps {
 	children?: ReactNode;
 	onClick?: () => void;
 	btnRef?: RefObject<HTMLButtonElement | null>;
+	ariaLabel?: string;
 }
 
 export const Button = (props: ButtonProps) => {
@@ -36,7 +37,8 @@ export const Button = (props: ButtonProps) => {
 		btnType = ButtonType.BUTTON,
 		children,
 		onClick,
-		btnRef
+		btnRef,
+		ariaLabel
 	} = props;
 
 	const mods: Mods = {
@@ -55,6 +57,7 @@ export const Button = (props: ButtonProps) => {
 			type={btnType}
 			onClick={onClick}
 			ref={btnRef}
+			aria-label={ariaLabel}
 		>
 			{children}
 		</button>
