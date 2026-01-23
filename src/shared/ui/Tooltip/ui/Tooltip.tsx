@@ -9,12 +9,15 @@ import styles from './Tooltip.module.scss';
 import { classNames } from '@/shared/lib/classNames/classNames';
 
 interface TooltipProps {
-	classNameParent?: string;
+	parentClass?: string;
 }
 
-export default function Tooltip({ classNameParent }: TooltipProps) {
+export default function Tooltip({ parentClass }: TooltipProps) {
 	return (
-		<div className={classNames(styles.tooltip, {}, [classNameParent])}>
+		<div
+			className={classNames(styles.tooltip, {}, [parentClass])}
+			role='tooltip'
+		>
 			<Text
 				type={TextType.TEXT}
 				fontSize={TextSize.S}

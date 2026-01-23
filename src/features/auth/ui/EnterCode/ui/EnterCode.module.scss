@@ -1,0 +1,50 @@
+.messageText {
+	margin-bottom: 8px;
+	line-height: 130%;
+	letter-spacing: 0.4px;
+}
+
+.boldText {
+	line-height: 120%;
+	letter-spacing: 0.4px;
+	vertical-align: middle;
+}
+
+.phoneText {
+	margin-bottom: 24px;
+}
+
+.form {
+	margin: 0 auto;
+}
+
+.btn {
+	padding: 11px;
+	color: var(--color-primary);
+	font-family: inherit;
+	font-weight: 500;
+	font-style: medium;
+	line-height: 120%;
+	letter-spacing: 0.4px;
+	text-align: center;
+
+	&:hover {
+		opacity: 0.6;
+	}
+}
+
+.timer {
+	margin: 27px 0 16px;
+	line-height: 120%;
+	letter-spacing: 0.4px;
+}
+
+.newCode {
+	margin: 16px auto;
+	padding: 11px;
+	font-family: inherit;
+	font-weight: 500;
+	line-height: 120%;
+	letter-spacing: 0.4px;
+	text-align: center;
+}

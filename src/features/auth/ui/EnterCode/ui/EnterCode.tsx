@@ -1,5 +1,6 @@
 'use client';
 
+import { TimeLeft, useSetAuthStep } from '@/features/auth';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { formatPhone } from '@/shared/lib/formatPhone/formatPhone';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector/useAppSelector';
@@ -19,11 +20,10 @@ import {
 	TextTag,
 	TextType
 } from '@/shared/ui/Text';
-import { InfoCircle } from '@icons/index';
 import { useState } from 'react';
 import { EnterCodeForm } from '..';
-import styles from './EnterCodeForm.module.scss';
-import { TimeLeft, useSetAuthStep } from '@/features/auth';
+import styles from './EnterCode.module.scss';
+import TooltipWrapper from './TooltipWrapper';
 
 export const EnterCode = () => {
 	const [time, setTime] = useState(60);
@@ -61,22 +61,7 @@ export const EnterCode = () => {
 			>
 				{formattedPhone}
 			</Text>
-			{/* <div className={styles.infoWrapper}> */}
-			<Text
-				type={TextType.TEXT}
-				tag={TextTag.P}
-				fontSize={TextSize.L}
-				fontWeight={FontWeight.MEDIUM}
-				textAlign={TextAlign.CENTER}
-				color={TextColor.BLACK}
-				className={classNames(`${styles.infoText} ${styles.boldText}`, {}, [])}
-			>
-				Введите код
-				<InfoCircle width={24} height={24} className={styles.infoIcon} />
-			</Text>
-
-			{/* </div> */}
-
+			<TooltipWrapper />
 			<EnterCodeForm
 				setTime={setTime}
 				phone_number={phone_number}
@@ -85,18 +70,19 @@ export const EnterCode = () => {
 				disabled={disabled}
 			/>
 			{!finishedTime ? (
-				<Text
-					type={TextType.TEXT}
-					tag={TextTag.P}
-					fontSize={TextSize.L}
-					fontWeight={FontWeight.MEDIUM}
-					textAlign={TextAlign.CENTER}
-					color={TextColor.GRAY}
-					className={styles.timer}
-				>
-					Отправить новый код через
-					<TimeLeft initialTime={time} setFinishedTime={setFinishedTime} />
-				</Text>
+				<>
+					<Text
+						type={TextType.TEXT}
+						tag={TextTag.P}
+						fontWeight={FontWeight.MEDIUM}
+						textAlign={TextAlign.CENTER}
+						color={TextColor.GRAY}
+						className={styles.timer}
+					>
+						Отправить новый код через &nbsp;
+						<TimeLeft initialTime={time} setFinishedTime={setFinishedTime} />
+					</Text>
+				</>
 			) : (
 				<Button
 					btnType={ButtonType.BUTTON}
@@ -113,7 +99,6 @@ export const EnterCode = () => {
 					Отправить новый код
 				</Button>
 			)}
-
 			<Button
 				onClick={() => {
 					setStep('support');

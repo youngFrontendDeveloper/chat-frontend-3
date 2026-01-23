@@ -1,0 +1,35 @@
+.tooltipWrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.tooltipText {
+	padding: 8px;
+}
+
+.tooltipIcon {
+	line-height: 120%;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.tooltip {
+	top: -140px;
+	right: 0;
+	display: none;
+}
+
+.tooltipIcon:hover ~ .tooltip {
+	display: inline-block;
+}
+
+/* Для тач-устройств: показывать при активном состоянии */
+@media (hover: none) and (pointer: coarse) {
+	.tooltipIcon:active ~ .tooltip,
+	.tooltipIcon:focus ~ .tooltip {
+		display: inline-block;
+	}
+}
