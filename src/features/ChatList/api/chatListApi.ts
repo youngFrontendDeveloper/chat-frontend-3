@@ -2,7 +2,7 @@ import { rtkApi } from '@/shared/api/rtkApi';
 import type { ChatListResponse } from '../model/types';
 import { mockChatListResponse } from '../model/mocks';
 
-const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS === 'true';
+const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS === 'false';
 
 export const chatListApi = rtkApi.injectEndpoints({
 	endpoints: build => ({
@@ -21,8 +21,7 @@ export const chatListApi = rtkApi.injectEndpoints({
 								ordering: '-last_activity_at'
 							}
 						})
-					}),
-			providesTags: ['Chats']
+					})
 		})
 	})
 });

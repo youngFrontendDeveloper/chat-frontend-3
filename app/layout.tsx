@@ -16,7 +16,6 @@ interface IChildren {
 }
 
 import { Sidebar } from '@/widgets/Sidebar';
-import { ChatList } from '@/widgets/ChatList';
 
 export default function RootLayout({
 	children

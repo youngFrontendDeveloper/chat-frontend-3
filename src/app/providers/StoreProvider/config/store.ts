@@ -21,7 +21,7 @@ export const makeStore = (initialState?: StateSchema) => {
 		reducer: rootReducer,
 		preloadedState: initialState,
 		middleware: getDefaultMiddleware =>
-			getDefaultMiddleware().concat(rtkApi.middleware)
+			getDefaultMiddleware().concat([localApi.middleware, rtkApi.middleware])
 	});
 };
 

@@ -3,6 +3,11 @@
 import React, { useMemo } from 'react';
 import { useGetAllChatsQuery } from '@/features/ChatList/api/chatListApi';
 import type { ChatItem } from '@/features/ChatList/model/types';
+
+import { UserCard } from '@/shared/ui/UserCard/ui/UserCard';
+import type { IUserCard } from '@/shared/ui/UserCard/model/types/IUserCard';
+import { UserCardType } from '@/shared/ui/UserCard/model/types/IUserCard';
+
 import styles from './ChatList.module.scss';
 
 type Props = {
@@ -11,13 +16,72 @@ type Props = {
 	onSelectChat: (uid: string) => void;
 };
 
+const EMPTY_CHATS: ChatItem[] = [];
+
+const EMPTY_LAST_MESSAGE: NonNullable<ChatItem['last_seen_message']> = {
+	id: 0,
+	uid: '',
+	from_user: '',
+	content: 'Нет сообщений',
+	files_summary: { types: [], count: 0 },
+	has_replied_message: false,
+	has_forwarded_message: false,
+	new: false,
+	created_at: 0,
+	updated_at: 0
+};
+
+const CHAT_TYPE_MAP: Record<ChatItem['chat_type'], IUserCard['chat_type']> = {
+	chat: 'chat' as IUserCard['chat_type'],
+	group: 'public-group' as IUserCard['chat_type'],
+	channel: 'public-channel' as IUserCard['chat_type']
+};
+
+const buildUserCardData = (chat: ChatItem): IUserCard => {
+	const isGroup = chat.is_group;
+
+	const firstName = isGroup ? chat.name : (chat.chat.first_name ?? '');
+	const lastName = isGroup ? '' : (chat.chat.last_name ?? '');
+
+	const nickname = chat.chat.username ? `@${chat.chat.username}` : undefined;
+
+	const lastMessage =
+		chat.last_seen_message !== null
+			? {
+					...chat.last_seen_message,
+					new: chat.new_message_count > 0 || chat.last_seen_message.new
+				}
+			: EMPTY_LAST_MESSAGE;
+
+	return {
+		user: {
+			uid: chat.chat.uid,
+			username: chat.chat.username,
+			nickname,
+			first_name: firstName,
+			last_name: lastName,
+			avatar_url: chat.chat.avatar_url ?? undefined,
+			avatar_webp_url: chat.chat.avatar_webp_url ?? undefined,
+			is_online: !isGroup ? chat.chat.is_online : false,
+			was_online_at: chat.chat.was_online_at
+		},
+		notifications: chat.notification,
+		new_message_count: chat.new_message_count,
+		chat_type: CHAT_TYPE_MAP[chat.chat_type],
+		chat_key: chat.chat.uid,
+		last_message: lastMessage
+	};
+};
+
 export const ChatList: React.FC<Props> = ({
 	searchQuery,
 	activeChatUid,
 	onSelectChat
 }) => {
 	const { data, isLoading, isError } = useGetAllChatsQuery();
-	const allChats = data?.results ?? [];
+
+	// важно: чтобы ссылка в deps useMemo была стабильной и eslint не ругался
+	const allChats = data?.results ?? EMPTY_CHATS;
 
 	const filtered = useMemo(() => {
 		const q = searchQuery.trim().toLowerCase();
@@ -76,37 +140,10 @@ export const ChatList: React.FC<Props> = ({
 						onClick={() => onSelectChat(uid)}
 						className={`${styles.row} ${isActive ? styles.rowActive : ''}`}
 					>
-						<div className={styles.avatar}>
-							{chat.chat.avatar_url ? (
-								<img
-									className={styles.avatarImg}
-									src={chat.chat.avatar_url}
-									alt={chat.name}
-								/>
-							) : (
-								<div className={styles.avatarFallback}>
-									{(chat.name?.[0] ?? '?').toUpperCase()}
-								</div>
-							)}
-							{!chat.is_group && chat.chat.is_online ? (
-								<span className={styles.online} />
-							) : null}
-						</div>
-
-						<div className={styles.content}>
-							<div className={styles.top}>
-								<div className={styles.title}>{chat.name}</div>
-								{chat.new_message_count > 0 ? (
-									<div className={styles.badge}>{chat.new_message_count}</div>
-								) : null}
-							</div>
-
-							<div className={styles.sub}>
-								{chat.last_seen_message?.content
-									? chat.last_seen_message.content
-									: 'Нет сообщений'}
-							</div>
-						</div>
+						<UserCard
+							userData={buildUserCardData(chat)}
+							type={UserCardType.CHAT}
+						/>
 					</button>
 				);
 			})}
