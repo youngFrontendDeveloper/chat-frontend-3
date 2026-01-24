@@ -1,66 +1,37 @@
 'use client';
-import {
-	Text,
-	TextType,
-	TextAlign,
-	TextColor,
-	TextSize
-} from '@/shared/ui/Text';
+
+import { useRouter } from 'next/navigation';
+
 import { Container, ContainerType } from '@/shared/ui/Container';
-import Image from 'next/image';
+import { Text, TextAlign, TextColor, TextSize } from '@/shared/ui/Text';
+
+import { ChatListPanel } from '@/features/ChatList/ui/ChatListPanel/ChatListPanel';
+
 import cls from './chats.module.scss';
-import { ChatsPage } from '@/pages/Chats';
-import { useState } from 'react';
 
 const Chats = () => {
+	const router = useRouter();
+
 	return (
 		<Container type={ContainerType.WRAPPER}>
 			<Container type={ContainerType.SIDEBAR}>
-				<div className={cls.placeholder}>
-					{/* Тестовое наполнение — удалить в проде */}
-					<input className={cls.input} />
-					<div className={cls.mockChats}>
-						{Array.from({ length: 72 }).map((_, i) => (
-							<div key={i} className={cls.chatItem}>
-								<div className={cls.avatar}></div>
-								<div className={cls.info}>
-									<Text type={TextType.TITLE} className={cls.name}>
-										Пользователь {i + 1}
-									</Text>
-									<Text type={TextType.TEXT} className={cls.message}>
-										Привет! Это заглушка сообщения.
-									</Text>
-								</div>
-							</div>
-						))}
-					</div>
+				<div className={cls.left}>
+					<ChatListPanel onSelectChat={uid => router.push(`/im/${uid}`)} />
 				</div>
 			</Container>
-			<Container type={ContainerType.CONTENT}>
-				<div className={cls.rightCont}>
-					<Image
-						src='/images/png/img_frog Web.png'
-						alt='Нет сообщений'
-						width={200}
-						height={200}
-					/>
-					<Text
-						color={TextColor.GRAY}
-						fontSize={TextSize.L}
-						textAlign={TextAlign.CENTER}
-					>
-						Сообщений пока нет
-					</Text>
-					<Text
-						color={TextColor.GRAY}
-						fontSize={TextSize.S}
-						textAlign={TextAlign.CENTER}
-					>
-						Напишите первым :)
-					</Text>
-				</div>
 
-				<ChatsPage />
+			<Container type={ContainerType.CONTENT}>
+				<div className={cls.right}>
+					<div className={cls.empty}>
+						<Text
+							color={TextColor.GRAY}
+							fontSize={TextSize.L}
+							textAlign={TextAlign.CENTER}
+						>
+							Выберите чат слева
+						</Text>
+					</div>
+				</div>
 			</Container>
 		</Container>
 	);

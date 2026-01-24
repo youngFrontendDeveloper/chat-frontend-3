@@ -1,5 +1,4 @@
 import { RootState } from '@/app/providers/StoreProvider';
-
 import { authActions } from '@/features/auth/model/slices/authSlice';
 import {
 	BaseQueryFn,
@@ -9,13 +8,11 @@ import {
 } from '@reduxjs/toolkit/query/react';
 import { logoutFromInterceptor } from './services/logoutForInterceptor/logoutForInterceptor';
 
-// Интерцептор 1: добавление accessToken в заголовок
 const baseQuery = fetchBaseQuery({
-	baseUrl: process.env.NEXT_PUBLIC_PROXY_PREFIX,
+	baseUrl: process.env.NEXT_PUBLIC_PROXY_PREFIX ?? '/api/proxy/',
 	credentials: 'include'
 });
 
-// Интерцептор 2: refresh при 401
 const baseQueryWithReauth: BaseQueryFn<
 	string | FetchArgs,
 	unknown,
@@ -24,7 +21,6 @@ const baseQueryWithReauth: BaseQueryFn<
 	const result = await baseQuery(args, api, extraOptions);
 
 	if (result.error && result.error.status === 401) {
-		// 1. Ждем завершения текущего refresh, чтобы избежать состояния гонки
 		if ((api.getState() as RootState).auth?.isRefreshing) {
 			await new Promise(resolve => {
 				const check = () => {
@@ -41,21 +37,19 @@ const baseQueryWithReauth: BaseQueryFn<
 
 		api.dispatch(authActions.setRefreshing(true));
 
-		// 2. делаем запрос на refresh
 		try {
 			const refreshResult = await fetch('/api/auth/refresh', {
 				method: 'POST'
 			});
 
-			if (refreshResult.hasOwnProperty('error')) {
+			if ((refreshResult as unknown as { error?: unknown }).error) {
 				api.dispatch(authActions.logout());
 				await logoutFromInterceptor();
 				return result;
 			}
 
-			// 3. Повторяем исходный запрос с новым токеном
 			return baseQuery(args, api, extraOptions);
-		} catch (_) {
+		} catch {
 			api.dispatch(authActions.logout());
 			await logoutFromInterceptor();
 			return result;

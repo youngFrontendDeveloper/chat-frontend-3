@@ -1,0 +1,18 @@
+.panel {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background: #f6f6f6;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.search {
+	padding: 12px 12px 8px;
+}
+
+.list {
+	flex: 1 1 auto;
+	overflow: auto;
+	padding: 0 0 8px;
+}

@@ -1,27 +1,26 @@
 import { rtkApi } from '@/shared/api/rtkApi';
-import type { ChatListResponse } from '../model/types';
-import { mockChatListResponse } from '../model/mocks';
-
-const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS === 'false';
+import type { ChatListResponse, GetAllChatsRequest } from '../model/types';
 
 export const chatListApi = rtkApi.injectEndpoints({
 	endpoints: build => ({
-		getAllChats: build.query<ChatListResponse, void>({
-			...(USE_MOCKS
-				? {
-						queryFn: async () => {
-							return { data: mockChatListResponse };
-						}
+		getAllChats: build.query<ChatListResponse, GetAllChatsRequest | void>({
+			query: query => {
+				const pageSize = query?.pageSize ?? 100;
+				const ordering = query?.ordering ?? '-last_activity_at';
+				const search = query?.searchQuery?.trim()
+					? query.searchQuery.trim()
+					: undefined;
+
+				return {
+					url: '/chat/list', // без завершающего слэша
+					params: {
+						page_size: pageSize,
+						ordering,
+						search
 					}
-				: {
-						query: () => ({
-							url: 'chat/list/', // можно без ведущего /
-							params: {
-								page_size: 100,
-								ordering: '-last_activity_at'
-							}
-						})
-					})
+				};
+			},
+			providesTags: ['Chats']
 		})
 	})
 });

@@ -1,3 +1,9 @@
+export interface GetAllChatsRequest {
+	pageSize?: number;
+	ordering?: string;
+	searchQuery?: string;
+}
+
 export interface ChatItem {
 	id: number;
 	chat: {

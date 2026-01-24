@@ -1,73 +1,40 @@
 'use client';
-import {
-	Text,
-	TextAlign,
-	TextColor,
-	TextSize,
-	TextType
-} from '@/shared/ui/Text';
+
+import { useRouter } from 'next/navigation';
+
 import { Container, ContainerType } from '@/shared/ui/Container';
-import Image from 'next/image';
+import { Text, TextAlign, TextColor, TextSize } from '@/shared/ui/Text';
+
+import { ContactsListPanel } from '@/features/ChatList/ui/ContactsListPanel/ContactsListPanel';
+
 import cls from './contacts.module.scss';
 
-const Contacts = () => {
+const Chats = () => {
+	const router = useRouter();
+
 	return (
 		<Container type={ContainerType.WRAPPER}>
 			<Container type={ContainerType.SIDEBAR}>
-				{/* Тестовое наполнение — удалить в проде */}
-				<div className={cls.placeholder}>
-					<div className={cls.header}>
-						<Text type={TextType.TITLE} className={cls.title}>
-							Контакты пользователей А-чата
-						</Text>
-						<div className={cls.searchBar}>
-							<input placeholder='Поиск' className={cls.searchInput} />
-						</div>
-					</div>
-
-					<div className={cls.contactList}>
-						{Array.from({ length: 18 }).map((_, i) => (
-							<div key={i} className={cls.contactItem}>
-								<div className={cls.avatar}></div>
-								<div className={cls.info}>
-									<Text type={TextType.TITLE} className={cls.name}>
-										Пользователь {i + 1}
-									</Text>
-									<Text type={TextType.TEXT} className={cls.status}>
-										в сети
-									</Text>
-								</div>
-							</div>
-						))}
-					</div>
+				<div className={cls.left}>
+					<ContactsListPanel onSelectChat={uid => router.push(`/im/${uid}`)} />
 				</div>
 			</Container>
+
 			<Container type={ContainerType.CONTENT}>
-				<div className={cls.rightCont}>
-					<Image
-						src='/images/png/img_frog Web.png'
-						alt='Нет сообщений'
-						width={200}
-						height={200}
-					/>
-					<Text
-						color={TextColor.GRAY}
-						fontSize={TextSize.L}
-						textAlign={TextAlign.CENTER}
-					>
-						Сообщений пока нет
-					</Text>
-					<Text
-						color={TextColor.GRAY}
-						fontSize={TextSize.S}
-						textAlign={TextAlign.CENTER}
-					>
-						Напишите первым :)
-					</Text>
+				<div className={cls.right}>
+					<div className={cls.empty}>
+						<Text
+							color={TextColor.GRAY}
+							fontSize={TextSize.L}
+							textAlign={TextAlign.CENTER}
+						>
+							Выберите чат слева
+						</Text>
+					</div>
 				</div>
 			</Container>
 		</Container>
 	);
 };
 
-export default Contacts;
+export default Chats;

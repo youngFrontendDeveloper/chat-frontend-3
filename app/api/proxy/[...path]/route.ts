@@ -14,12 +14,23 @@ const excludeHeaders = [
 	'content-encoding'
 ];
 
+function joinUrl(base: string, path: string) {
+	const b = base.endsWith('/') ? base.slice(0, -1) : base;
+	const p = path.startsWith('/') ? path : `/${path}`;
+	return `${b}${p}`;
+}
+
 async function handleProxy(request: NextRequest): Promise<NextResponse> {
-	const path = request.nextUrl.pathname.replace(
-		process.env.NEXT_PUBLIC_PROXY_PREFIX as string,
-		''
-	);
-	const targetUrl = `${process.env.NEXT_PUBLIC_BASE_API}${path}/`;
+	const proxyPrefix = process.env.NEXT_PUBLIC_PROXY_PREFIX as string; // например: /api/proxy
+	const baseApi = process.env.NEXT_PUBLIC_BASE_API as string; // например: http://host/api/v1
+
+	const pathWithoutPrefix = request.nextUrl.pathname.replace(proxyPrefix, ''); // /chat/list или /chat/list/
+	const normalizedPath = pathWithoutPrefix.endsWith('/')
+		? pathWithoutPrefix.slice(0, -1)
+		: pathWithoutPrefix;
+
+	// бек ожидает trailing slash на DRF-подобных API
+	const targetUrl = `${joinUrl(baseApi, normalizedPath)}/`;
 
 	const accessToken = request.cookies.get('accessToken')?.value;
 
@@ -43,24 +54,22 @@ async function handleProxy(request: NextRequest): Promise<NextResponse> {
 		const res = await fetch(targetUrl, {
 			method: request.method,
 			headers,
-			body
+			body,
+			redirect: 'follow'
 		});
 
 		const responseHeaders = new Headers(res.headers);
 		excludeHeaders.forEach(h => responseHeaders.delete(h));
 
-		const response = new NextResponse(res.body, {
+		return new NextResponse(res.body, {
 			status: res.status,
 			statusText: res.statusText,
 			headers: responseHeaders
 		});
-
-		return response;
 	} catch (error) {
 		if (process.env.NODE_ENV === 'development') {
 			console.error('Proxy error', error);
 		}
-
 		return NextResponse.json({ error: 'Proxy failed' }, { status: 500 });
 	}
 }
