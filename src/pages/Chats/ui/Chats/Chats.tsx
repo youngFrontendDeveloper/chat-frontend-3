@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation';
 import { memo } from 'react';
 
 import cls from './Chats.module.scss';
-import { MessagesPage } from '@/pages/MessagesPage/MessagesPage';
+import { MessagesPage } from '@/pages/Chats/ui/MessagesPage/MessagesPage';
 
 const ChatsPageComponent = () => {
 	const params = useParams();

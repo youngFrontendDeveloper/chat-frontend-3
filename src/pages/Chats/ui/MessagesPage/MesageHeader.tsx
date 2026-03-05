@@ -1,5 +1,5 @@
 const MessageHeader = () => {
-	return <div>Верхний Сомпонент</div>;
+	return <div>Верхний Компонент</div>;
 };
 
 export default MessageHeader;

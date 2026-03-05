@@ -1,6 +1,5 @@
 'use client';
 
-import { useEditProfileMutation } from '@/entities/Profile/api/editProfile.api';
 import { FormAuthItem, useSetAuthStep } from '@/features/auth';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector/useAppSelector';
@@ -53,7 +52,6 @@ export const EnterCodeForm = ({
 	const setStep = useSetAuthStep();
 	const dispatch = useAppDispatch();
 	const router = useRouter();
-	const [editProfile] = useEditProfileMutation();
 	const methods = useForm<LoginCodeForm>();
 	const { handleSubmit, setError, clearErrors, reset } = methods;
 	const code = useWatch({
@@ -75,11 +73,11 @@ export const EnterCodeForm = ({
 					return;
 				}
 
+				// console.log(code);
 				const res = await submitCodeRequest({ phone_number, code });
 
-				if (res?.is_filled) {
-					await editProfile({}).unwrap();
-				}
+				// console.log(res);
+				// console.log(res.errors);
 
 				if (res?.success) {
 					handleSuccessResponse(
@@ -119,8 +117,7 @@ export const EnterCodeForm = ({
 			attemptsNumber,
 			dispatch,
 			// setAttemptCounter,
-			attemptCounter,
-			editProfile
+			attemptCounter
 		]
 	);
 

@@ -1,3 +1,7 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useEffect, useState, useRef } from 'react';
 import {
 	FontWeight,
 	Text,
@@ -9,12 +13,64 @@ import {
 	TitleTag
 } from '@/shared/ui/Text';
 import { Success } from '@icons/index';
-import { SuccessBlockProps } from '..';
 import styles from './SuccessBlock.module.scss';
 
-export function SuccessBlock({ marginTop, title, text }: SuccessBlockProps) {
+export const REDIRECT_DELAYS = [3000, 5000, 10000] as const;
+export type RedirectDelay = (typeof REDIRECT_DELAYS)[number];
+
+export interface SuccessBlockProps {
+	marginTop?: string;
+	title: string;
+	text?: string;
+	redirectUrl?: string;
+	redirectDelay?: RedirectDelay;
+}
+
+export function SuccessBlock({
+	marginTop,
+	title,
+	text,
+	redirectUrl,
+	redirectDelay = 3000
+}: SuccessBlockProps) {
+	const [countdown, setCountdown] = useState(Math.ceil(redirectDelay / 1000));
+	const router = useRouter();
+	const redirectUrlRef = useRef(redirectUrl);
+
+	useEffect(() => {
+		redirectUrlRef.current = redirectUrl;
+	}, [redirectUrl]);
+
+	useEffect(() => {
+		if (!redirectUrl || countdown <= 0) {
+			return;
+		}
+
+		const interval = setInterval(() => {
+			setCountdown(prev => (prev <= 1 ? 0 : prev - 1));
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, [redirectUrl, countdown]);
+
+	useEffect(() => {
+		if (redirectUrl && countdown <= 0) {
+			router.push(redirectUrl);
+		}
+	}, [redirectUrl, countdown, router]);
+
+	useEffect(() => {
+		setCountdown(Math.ceil(redirectDelay / 1000));
+	}, [redirectDelay]);
+
 	return (
-		<div className={styles.successBlock} style={{ marginTop: marginTop }}>
+		<div
+			className={styles.successBlock}
+			style={{ marginTop }}
+			role='status'
+			aria-live='polite'
+			aria-atomic='true'
+		>
 			<Success width={66.7} height={66.7} className={styles.successIcon} />
 
 			<Text
@@ -38,7 +94,16 @@ export function SuccessBlock({ marginTop, title, text }: SuccessBlockProps) {
 					color={TextColor.BLACK}
 					className={styles.successText}
 				>
-					{text}
+					{text}{' '}
+					{countdown > 0 && (
+						<span
+							className={styles.countdown}
+							aria-live='polite'
+							aria-atomic='true'
+						>
+							({countdown}с)
+						</span>
+					)}
 				</Text>
 			)}
 		</div>

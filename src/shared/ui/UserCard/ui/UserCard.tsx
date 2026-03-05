@@ -25,6 +25,7 @@ interface UserCardProps {
 	userData?: IUserCard;
 	type: UserCardType;
 	sendingMessage?: boolean;
+	onDelete?: () => void;
 }
 
 const formatUnreadCount = (count: number | undefined): string => {
@@ -71,7 +72,8 @@ export const UserCard = ({
 	className,
 	userData,
 	type,
-	sendingMessage
+	sendingMessage,
+	onDelete
 }: UserCardProps) => {
 	if (!userData) {
 		return null;
@@ -197,6 +199,7 @@ export const UserCard = ({
 					color={ButtonColor.TRANSPARENT}
 					size={ButtonSize.S}
 					className={cls.trashBtn}
+					onClick={onDelete}
 				>
 					<Trash className={cls.trashIcon} />
 				</Button>

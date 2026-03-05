@@ -11,8 +11,7 @@ import { logoutFromInterceptor } from './services/logoutForInterceptor/logoutFor
 
 // Интерцептор 1: добавление accessToken в заголовок
 const baseQuery = fetchBaseQuery({
-	baseUrl: process.env.NEXT_PUBLIC_PROXY_PREFIX,
-	credentials: 'include'
+	baseUrl: process.env.NEXT_PUBLIC_PROXY_PREFIX
 });
 
 // Интерцептор 2: refresh при 401

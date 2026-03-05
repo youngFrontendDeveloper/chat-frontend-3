@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Text, TextAlign, TextColor, TextSize } from '../Text';
@@ -7,12 +7,6 @@ import cls from './EmptyChats.module.scss';
 
 const EmptyChats = () => {
 	const router = useRouter();
-
-	const buttonRef = useRef<HTMLButtonElement>(null);
-
-	useEffect(() => {
-		buttonRef.current?.focus();
-	}, []);
 
 	const handleStartChat = useCallback(() => {
 		router.push('/contacts');
@@ -46,7 +40,6 @@ const EmptyChats = () => {
 			</div>
 			<Button
 				onClick={handleStartChat}
-				btnRef={buttonRef}
 				ariaLabel='Начать новый чат'
 				theme={ButtonTheme.BACKGROUND}
 				btnType={ButtonType.BUTTON}

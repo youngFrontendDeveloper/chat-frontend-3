@@ -1,0 +1,25 @@
+.blackListContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	margin-top: 20px;
+}
+
+.blackListSkeleton {
+	gap: 10px;
+}
+
+.blackListEmpty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+.emptyImage {
+	margin-bottom: 24px;
+	width: 250px;
+	height: 250px;
+	user-select: none;
+}

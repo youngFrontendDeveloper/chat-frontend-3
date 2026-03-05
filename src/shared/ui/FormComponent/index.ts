@@ -10,4 +10,3 @@ export { OTPInput } from './FormItems/ui/OTPInput';
 export { PhoneInput } from './FormItems/ui/PhoneInput';
 export { SelectItem } from './FormItems/ui/Select';
 export { Textarea } from './FormItems/ui/Textarea';
-export { FileInput } from './FormItems/ui/FileInput';

@@ -86,7 +86,7 @@
 
 			&:active {
 				background-color: var(--color-violet-700);
-				color: var(--white-color);
+				color: var(--color-white);
 			}
 		}
 	}
@@ -137,6 +137,7 @@
 }
 
 .size_s {
+	padding: 4px 16px;
 	width: fit-content;
 }
 

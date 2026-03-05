@@ -1,11 +1,12 @@
 'use client';
+import { useEditProfileMutation } from '../../api/editProfile.api';
 
-import { useEditProfileMutation } from '@/entities/Profile/api/editProfile.api';
 import { FormSettingsItem } from '@/entities/Settings';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { convertDateToNumber } from '@/shared/lib/convertDateToNumber/convertDateToNumber';
 import { convertNumberToDate } from '@/shared/lib/convertNumberToDate/convertNumberToDate';
 import { useAppSelector } from '@/shared/lib/hooks/useAppSelector/useAppSelector';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch/useAppDispatch';
 import { Button, ButtonType } from '@/shared/ui/Button';
 import { ErrorComponent } from '@/shared/ui/ErrorComponent';
 import { Form, SelectItem } from '@/shared/ui/FormComponent';
@@ -24,9 +25,10 @@ import {
 } from '@/shared/utils/dateOptions';
 import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ProfileSchema } from '../..';
+import { AvatarProfile, ProfileSchema } from '../..';
 import { formItems } from '../../model/const/formItems';
 import { createCustomStyles } from '../../model/lib/createCustomStyles';
+
 import cls from './EditProfileForm.module.scss';
 
 // ==================== ТИПЫ ====================
@@ -49,6 +51,8 @@ export function EditProfileForm({ parentClass }: EditProfileFormProps) {
 	const [serverError, setServerError] = useState<string | null>(null);
 	const [editProfile, { isLoading, data }] = useEditProfileMutation();
 
+	const dispatch = useAppDispatch();
+
 	// ==================== FORM ====================
 
 	const methods = useForm<EditProfileForm>({
@@ -56,6 +60,7 @@ export function EditProfileForm({ parentClass }: EditProfileFormProps) {
 			nickname: '',
 			first_name: '',
 			last_name: '',
+			avatar_url: null,
 			additional_information: '',
 			birthday: 0
 		},
@@ -70,8 +75,6 @@ export function EditProfileForm({ parentClass }: EditProfileFormProps) {
 	const hasError = formState.isSubmitted && (!day || !month || !year);
 	const profile = useAppSelector(state => state.profile);
 
-	console.log('profile', profile);
-
 	// ==================== ЭФФЕКТЫ ====================
 	// Загрузка данных профиля в форму
 	useEffect(() => {
@@ -84,6 +87,7 @@ export function EditProfileForm({ parentClass }: EditProfileFormProps) {
 				nickname: profile.nickname || '',
 				first_name: profile.first_name || '',
 				last_name: profile.last_name || '',
+				avatar_url: profile.avatar_url || null,
 				additional_information: profile.additional_information || '',
 				day: { label: String(enteredDay), value: String(enteredDay) },
 				month: { label: String(enteredMonth), value: String(enteredMonth) },
@@ -103,26 +107,6 @@ export function EditProfileForm({ parentClass }: EditProfileFormProps) {
 		}
 	}, [day, month, year, setValue]);
 
-	useEffect(() => {
-		if (!profile) {
-			return;
-		}
-
-		const { enteredDay, enteredMonth, enteredYear } = convertNumberToDate(
-			profile.birthday
-		);
-
-		reset({
-			nickname: profile.nickname || '',
-			first_name: profile.first_name || '',
-			last_name: profile.last_name || '',
-			additional_information: profile.additional_information || '',
-			day: { label: String(enteredDay), value: String(enteredDay) },
-			month: { label: String(enteredMonth), value: String(enteredMonth) },
-			year: { label: String(enteredYear), value: String(enteredYear) }
-		});
-	}, [profile, reset]);
-
 	// ==================== ОТПРАВКА ФОРМЫ ====================
 	const onSubmit: SubmitHandler<EditProfileForm> = useCallback(
 		async data => {
@@ -141,6 +125,7 @@ export function EditProfileForm({ parentClass }: EditProfileFormProps) {
 				};
 
 				const result = await editProfile(newData).unwrap();
+
 				console.log(result, 'result');
 				if (result) {
 					setIsSuccess(true);
@@ -173,13 +158,19 @@ export function EditProfileForm({ parentClass }: EditProfileFormProps) {
 			// }
 		},
 
-		[day, month, year, editProfile, setFormError]
+		[day, month, year, editProfile, setFormError, dispatch]
 	);
 
 	// ==================== РЕНДЕРИНГ ====================
 	if (isSuccess) {
 		return (
-			<SuccessBlock marginTop='100px' title='Ваш профиль успешно изменен' />
+			<SuccessBlock
+				marginTop='100px'
+				title='Ваш профиль успешно изменен'
+				text='Перенаправление в настройки...'
+				redirectUrl='/settings'
+				redirectDelay={3000}
+			/>
 		);
 	}
 
@@ -189,6 +180,8 @@ export function EditProfileForm({ parentClass }: EditProfileFormProps) {
 
 	return (
 		<>
+			<AvatarProfile />
+
 			<Form<EditProfileForm>
 				methods={methods}
 				onSubmit={onSubmit}

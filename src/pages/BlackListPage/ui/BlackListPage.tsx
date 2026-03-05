@@ -1,5 +1,6 @@
-import styles from './BlackListPage.module.scss';
+import { BlackList } from '@/entities/BlackList';
 import { SettingsHeaderBlock } from '@/entities/Settings';
+import styles from './BlackListPage.module.scss';
 
 export function BlackListPage() {
 	return (
@@ -9,7 +10,9 @@ export function BlackListPage() {
 				href={'/settings'}
 				parentClass={styles.headerBlock}
 			/>
-			<div className={styles.content}>{/* Черный список поместить сюда */}</div>
+			<div className={styles.content}>
+				<BlackList />
+			</div>
 		</section>
 	);
 }

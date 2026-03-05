@@ -57,5 +57,6 @@ export const chatApi = rtkApi.injectEndpoints({
 export const {
 	useGetChatsQuery,
 	useGetChatByIdQuery,
+	useLazyGetChatsQuery,
 	endpoints: { getChats }
 } = chatApi;

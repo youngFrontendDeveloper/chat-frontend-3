@@ -34,8 +34,17 @@ const profileSlice = createSlice({
 		setProfile(state, action: PayloadAction<ProfileSchema>) {
 			return action.payload;
 		},
+		clearProfile: () => initialState,
 
-		clearProfile: () => initialState
+		//  обновление только аватара
+		setAvatarUrl(state, action: PayloadAction<string | null>) {
+			state.avatar_url = action.payload ?? '';
+		},
+
+		// Опционально: для webp-версии
+		setAvatarWebpUrl(state, action: PayloadAction<string | null>) {
+			state.avatar_webp_url = action.payload ?? '';
+		}
 	}
 });
 

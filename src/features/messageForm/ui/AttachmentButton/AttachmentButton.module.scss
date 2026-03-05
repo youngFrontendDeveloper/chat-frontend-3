@@ -1,17 +1,13 @@
 .button {
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	width: 36px;
 	height: 36px;
-	padding: 0;
 	background: none;
 	border: none;
 	outline: inherit;
-	color: var(--color-primary);
 }
 
 .icon {
-	width: 30px;
-	height: 30px;
+	width: 15px;
+	height: 27px;
+	transform: rotate(45deg);
 }

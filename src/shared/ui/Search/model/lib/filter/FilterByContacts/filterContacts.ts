@@ -8,7 +8,7 @@ export function filterContacts<
 >(items: T[], searchTerm: string): T[] {
 	const term = searchTerm.toLowerCase().trim();
 	if (!term) {
-		return [];
+		return items;
 	}
 
 	return items.filter(item => {

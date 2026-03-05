@@ -1,2 +1,2 @@
 export { SuccessBlock } from './ui/SuccessBlock';
-export type { SuccessBlockProps } from './model/types';
+export { REDIRECT_DELAYS, type RedirectDelay } from './ui/SuccessBlock';

@@ -6,7 +6,7 @@ import styles from './MessageFormComponent.module.scss';
 export function MessageFormComponent() {
 	return (
 		<section className={styles.messageFormComponent}>
-			{/* <AttachmentButton /> */}
+			<AttachmentButton />
 			<MessageForm />
 			<VoiceButton />
 		</section>
