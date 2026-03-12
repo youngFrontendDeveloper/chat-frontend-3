@@ -169,7 +169,8 @@ export const sendWS = async <T = WSResponse>(
 		}
 
 		return new Promise((resolve, reject) => {
-			const requestUid = crypto.randomUUID();
+			const requestUid = request.request_uid ?? crypto.randomUUID();
+			// const requestUid = crypto.randomUUID();
 
 			// для иммутабельности
 			const requestWithUid = {
@@ -218,10 +219,23 @@ export const connectChat = () =>
 		action: '_connect'
 	});
 
-export const createTextMessage = (chatKey: string, text: string) =>
+// export const createTextMessageForUser = (
+// 	userUid: string,
+// 	content: string,
+// 	files: {
+// 		filename: string;
+// 		data: string;
+// 	}[] = []
+// ) =>
+// 	sendWS({
+// 		action: 'create_text_message',
+// 		object: { to_user_uid: userUid, content, files }
+// 	});
+
+export const createTextMessageForChat = (chatKey: string, content: string) =>
 	sendWS({
 		action: 'create_text_message',
-		object: { chat_key: chatKey, text }
+		object: { chat_key: chatKey, content }
 	});
 
 export const addMembersToChat = (chatKey: string, uids: string[]) =>

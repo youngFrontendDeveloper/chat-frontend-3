@@ -21,7 +21,7 @@ const ChatWidgetComponent = ({ chatUid, onClose }: ChatWidgetProps) => {
 	return (
 		<div className={containerClass}>
 			<div className={cls.header}>
-				<Text fontSize={TextSize.XL}>Диалог с {chatUid}</Text>
+				{/* <Text fontSize={TextSize.XL}>Диалог с {chatUid}</Text> */}
 				{onClose && (
 					<Button
 						onClick={handleClose}

@@ -1,3 +1,52 @@
 .messageForm {
 	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: 10px;
+	flex-grow: 1;
+	width: 100%;
+	max-width: 100%;
+}
+
+.textareaWrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: 10px;
+	width: 100%;
+	padding: 7.5px 12px;
+	background-color: var(--color-white);
+	border-radius: 20px;
+}
+
+.textarea {
+	width: 100%;
+	min-height: 21px;
+	max-height: 150px;
+	font-family: inherit;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 130%;
+	letter-spacing: 0.4px;
+	outline: none;
+	resize: none;
+	overflow: auto;
+}
+
+.textarea::-webkit-scrollbar {
+	width: 0;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+	background-color: transparent;
+}
+
+.button {
+	width: 36px;
+	min-width: 36px;
+	height: 36px;
+	padding: 0;
+	color: var(--color-primary);
 }

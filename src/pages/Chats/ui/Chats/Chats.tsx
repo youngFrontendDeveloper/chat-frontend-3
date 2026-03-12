@@ -6,12 +6,18 @@ import { ChatWidget } from '@/widgets/Chat';
 import { useParams } from 'next/navigation';
 import { memo } from 'react';
 
-import cls from './Chats.module.scss';
 import { MessagesPage } from '@/pages/Chats/ui/MessagesPage/MessagesPage';
+import cls from './Chats.module.scss';
 
 const ChatsPageComponent = () => {
 	const params = useParams();
-	const chatUid = params?.uid as string | undefined;
+	// const chatUid = params?.uid as string | undefined;
+
+	// Тестовые uid - потом подключить реальные
+	const userUid = '2089f9d3-ea44-4d30-876a-ddf177fa352a'; //5555555555
+	// const userUid = '54cdbe82-28aa-4abf-a69d-525d0ab4da93';  // 7777777777
+
+	const chatUid = userUid;
 
 	return (
 		<Container type={ContainerType.WRAPPER}>
@@ -21,14 +27,23 @@ const ChatsPageComponent = () => {
 
 			<Container type={ContainerType.CONTENT}>
 				{chatUid ? (
+					<div className={cls.emptyState}>
+						<MessagesPage userUid={chatUid} />
+						{/* <NotMessage /> */}
+					</div>
+				) : (
+					<ChatWidget chatUid={chatUid} />
+				)}
+			</Container>
+			{/* <Container type={ContainerType.CONTENT}>
+				{chatUid ? (
 					<ChatWidget chatUid={chatUid} />
 				) : (
 					<div className={cls.emptyState}>
-						<MessagesPage />
-						{/* <NotMessage /> */}
+						<MessagesPage />					
 					</div>
 				)}
-			</Container>
+			</Container> */}
 		</Container>
 	);
 };

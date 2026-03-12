@@ -1,0 +1,18 @@
+.button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 36px;
+	min-width: 36px;
+	height: 36px;
+	padding: 0;
+	background: none;
+	border: none;
+	outline: inherit;
+	color: var(--color-primary);
+}
+
+.icon {
+	width: 19px;
+	height: 25px;
+}

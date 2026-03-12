@@ -1,6 +1,7 @@
 'use client';
 
 import { classNames } from '@/shared/lib/classNames/classNames';
+import { useEffect, useRef } from 'react';
 import {
 	FieldValues,
 	Path,
@@ -19,6 +20,8 @@ interface TextareaProps<TFormValues extends FieldValues> {
 	disabled?: boolean;
 	classNameTextarea?: string;
 	height?: string | undefined;
+	onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+	textareaRef?: React.Ref<HTMLTextAreaElement>;
 }
 
 export function Textarea<TFormValues extends FieldValues>({
@@ -29,24 +32,52 @@ export function Textarea<TFormValues extends FieldValues>({
 	placeholder = '',
 	disabled,
 	classNameTextarea,
-	height
+	height,
+	onKeyDown,
+	textareaRef
 }: TextareaProps<TFormValues>) {
-	const { register, control } = useFormContext<TFormValues>();
-	// const { errors } = useFormState({
-	// 	control,
-	// 	name
-	// });
-	// const isError = Boolean(errors?.[name]?.message as string | undefined);
+	const { register } = useFormContext<TFormValues>();
 	const { fieldState } = useController({ name });
 	const isError = !!fieldState.error;
+	const internalRef = useRef<HTMLTextAreaElement | null>(null);
+	const { ref: registerRef, ...registerRest } = register(name, rules);
 
-	console.log('isError in Textarea', isError);
+	const setRefs = (element: HTMLTextAreaElement | null) => {
+		internalRef.current = element;
+		registerRef(element);
 
-	console.log('Я - Textarea');
+		if (!textareaRef) {
+			return;
+		}
+
+		if (typeof textareaRef === 'function') {
+			textareaRef(element);
+		} else if (textareaRef && 'current' in textareaRef) {
+			// eslint-disable-next-line react-hooks/immutability
+			textareaRef.current = element;
+		}
+	};
+
+	useEffect(() => {
+		const textarea = internalRef.current;
+		if (textarea) {
+			const autoResize = () => {
+				textarea.style.height = height || '21px';
+				textarea.style.height = textarea.scrollHeight + 'px';
+			};
+
+			autoResize(); // Устанавливаем высоту при загрузке
+			textarea.addEventListener('input', autoResize);
+
+			return () => textarea.removeEventListener('input', autoResize);
+		}
+	}, [height]);
 
 	return (
 		<textarea
-			{...register(name, rules)}
+			onKeyDown={onKeyDown}
+			ref={setRefs}
+			{...registerRest}
 			id={name}
 			placeholder={placeholder}
 			autoComplete={FormItemAutocomplete.OFF}
@@ -59,7 +90,13 @@ export function Textarea<TFormValues extends FieldValues>({
 				},
 				[classNameTextarea]
 			)}
-			style={height ? { minHeight: height, maxHeight: height } : {}}
+			style={
+				height
+					? {
+							minHeight: height
+						}
+					: {}
+			}
 		/>
 	);
 }
